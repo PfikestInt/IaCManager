@@ -10,6 +10,8 @@ nav:
   - Sequence Diagrams:
     - Create Repository: design/sequence_diagrams/backup.md
     - Environment Management: design/sequence_diagrams/restore.md
+- Repositories Created:
+  - Workloads: repositories_created/workloads_created.md
 
 theme:
   name: material
@@ -21,6 +23,7 @@ theme:
 
 plugins:
 - search
+- table-reader
 
 markdown_extensions:
 
