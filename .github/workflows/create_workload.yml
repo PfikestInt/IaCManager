@@ -7,7 +7,11 @@ on:
         description: "Workload name"
         required: true
         type: string
-
+      description:
+        description: "Description"
+        required: true
+        type: string
+  
 jobs:
   create-workload:
     name: "Create Workload"
