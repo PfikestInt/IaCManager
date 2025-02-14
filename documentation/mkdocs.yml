@@ -6,7 +6,6 @@ nav:
 - Introduction: index.md
 - Design:
   - Naming Convention: design/naming_convention.md
-  - Key Vault: design/key_vault.md
   - Sequence Diagrams:
     - Create Repository: design/sequence_diagrams/backup.md
     - Environment Management: design/sequence_diagrams/restore.md
