@@ -25,6 +25,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: data
-      - run: cp workloads_created.csv documentation/docs/repositories_created/workloads_created.csv
+      - run: ls
+      - run: cp workloads_created.csv ./documentation/docs/repositories_created/workloads_created.csv
       - run: pip install mkdocs-material mkdocs-table-reader-plugin
       - run: cd documentation && mkdocs gh-deploy --force
