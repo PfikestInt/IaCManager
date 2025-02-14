@@ -22,9 +22,9 @@ jobs:
           path: .cache
           restore-keys: |
             mkdocs-material-
-      - run: pip install mkdocs-material mkdocs-table-reader-plugin
-      - run: cd documentation && mkdocs gh-deploy --force
       - uses: actions/checkout@v4
         with:
           ref: data
-      - run: ls
+      - run: cp workloads_created.csv documentation/repositories_created/
+      - run: pip install mkdocs-material mkdocs-table-reader-plugin
+      - run: cd documentation && mkdocs gh-deploy --force
