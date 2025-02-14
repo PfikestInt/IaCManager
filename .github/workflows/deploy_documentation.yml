@@ -1,9 +1,6 @@
 name: Deploy Documentation 
 on:
-  push:
-    branches:
-      - master 
-      - main
+  workflow_dispatch:
 permissions:
   contents: write
 jobs:
@@ -27,3 +24,4 @@ jobs:
             mkdocs-material-
       - run: pip install mkdocs-material mkdocs-table-reader-plugin
       - run: cd documentation && mkdocs gh-deploy --force
+      - run: ls
