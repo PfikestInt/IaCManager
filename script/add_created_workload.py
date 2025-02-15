@@ -23,9 +23,7 @@ def prepend_line(name: str, purpose: str, created_by: str, created_date: date):
             df
         ], 
         ignore_index=True
-    )
-
-    df.to_csv("temp_data/workloads_created.csv")
+    ).to_csv("temp_data/workloads_created.csv", index=False)
 
 
 if __name__ == "__main__":
