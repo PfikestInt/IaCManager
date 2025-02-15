@@ -15,7 +15,10 @@ on:
         description: "Description"
         required: true
         type: string
-  
+
+permissions:
+  contents: write
+
 jobs:
   create-workload:
     name: "Create Workload"
@@ -64,6 +67,5 @@ jobs:
           cd temp_data
           git config --global user.name 'Workload Creator'
           git config --global user.email 'workload.creator@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git commit -am "Automated update"
           git push
