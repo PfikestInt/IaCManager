@@ -2,6 +2,9 @@ name: Create Workload Repository
 
 on:
   workflow_call:
+    outputs:
+      repository-url: 
+        value: ${{ jobs.create_workload_repository.outputs.repository-url }}
     inputs:
       environment-type:
         required: true
@@ -20,8 +23,6 @@ on:
         required: true
       PFIKEST_REPOSITORY_MANAGER_ID:
         required: true
-    outputs:
-      repository-url: ${{ jobs.create_workload_repository.outputs.repository-url }}
 
 permissions:
   id-token: write
