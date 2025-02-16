@@ -66,6 +66,9 @@ jobs:
     needs: create-workload-repository
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
       - name: Create Config
         run: echo "${{ needs.create-workload-repository.outputs.repository-url }}"
         

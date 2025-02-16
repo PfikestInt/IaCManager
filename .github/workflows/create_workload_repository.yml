@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      repository-url: ${{ steps.create_repo.outputs.repo }}
+      repository-url: ${{ steps.create_repo.outputs.repo_url }}
   
     steps:
       # Checkout the repository to the GitHub Actions runner
