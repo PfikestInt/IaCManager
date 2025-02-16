@@ -30,14 +30,13 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      repository-url: ${{ steps.create_repo.outputs.repo_url }}
+      repository-url: ${{ steps.create_repo.outputs.repo }}
   
     steps:
-        # Checkout the repository to the GitHub Actions runner
+      # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v4
 
-    
     - name: Zero Pad
       run: echo "PADDED_COUNTER=$(printf '%03d' ${{ github.event.inputs.counter }})" >> $GITHUB_ENV
 
