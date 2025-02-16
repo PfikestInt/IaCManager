@@ -67,7 +67,7 @@ jobs:
       
       - name: Zero Pad
         id: toLowerCase
-        run: INPUT=${{ github.event.inputs.counter }} echo "::set-output name=paddedValue::${printf "%03d" INPUT}"
+        run: INPUT=${{ github.event.inputs.counter }} echo "::set-output name=paddedValue::$(printf "%03d" INPUT)"
         
       - name: Create Repository
         id: create_repo
