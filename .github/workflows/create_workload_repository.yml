@@ -29,6 +29,9 @@ jobs:
   create-workload-repository:
     name: "Create Workload Repository"
     runs-on: ubuntu-latest
+
+    outputs:
+      repository-url: ${{ steps.create_repo.outputs.REPO_URL }}
   
     steps:
     - name: Checkout
@@ -55,10 +58,7 @@ jobs:
           -H "X-GitHub-Api-Version: 2022-11-28" \
           https://api.github.com/repos/PfikestInt/WorkloadTemplate/generate \
           -d '{"owner":"PfikestInt","name":"rg-${{ github.event.inputs.environment-type }}-${{ github.event.inputs.role }}-${{ env.PADDED_COUNTER }}","description":"${{ github.event.inputs.description }}","include_all_branches":true,"private":false}' > results.json
-        echo "REPO_URL=$(jq '.html_url' results.json)" >> $GITHUB_ENV
+        echo "REPO_URL=$(jq '.html_url' results.json)" >> "$GITHUB_OUTPUT"
 
-    - run: echo "${{ env.REPO_URL }}"
-
-    outputs:
-      repository-url: ${{ env.REPO_URL }}
+    - run: echo "${{ steps.create_repo.outputs.REPO_URL }}"
     
