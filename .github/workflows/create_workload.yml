@@ -56,7 +56,7 @@ jobs:
 
       
       - name: Zero Pad
-        run: PADDED_COUNTER=$(printf "%03d" ${{ github.event.inputs.counter }}) >> $GITHUB_ENV
+        run: echo "PADDED_COUNTER=$(printf '%03d' ${{ github.event.inputs.counter }})" >> $GITHUB_ENV
 
       # Use GitHub App to authorize repository actions
       - name: GitHub Authorization
