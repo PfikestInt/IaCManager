@@ -8,10 +8,11 @@ on:
         required: true
         type: choice
         options:
+        - "Azure subscription 1"
         - "sysadmin_sandbox"
         - "signature-development-001"
         - "signature-corp-shared-001"
-      environment:
+      environment-type:
         description: "Environment"
         required: true
         type: choice
@@ -41,48 +42,21 @@ permissions:
 
 jobs:
   create-workload-repository:
-    name: "Create Workload Repository"
+    uses: ./.github/workflows/create_workload_repository.yml
+    with:
+      environment-type: environment-type
+      role: role
+      counter: counter
+      description: description
+
+  create-config:
+    name: "Create Config"
     runs-on: ubuntu-latest
-    
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    defaults:
-      run:
-        shell: bash
+    needs: create-workload-repository
 
     steps:
-      # Checkout the repository to the GitHub Actions runner
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      
-      - name: Zero Pad
-        run: echo "PADDED_COUNTER=$(printf '%03d' ${{ github.event.inputs.counter }})" >> $GITHUB_ENV
-
-      # Use GitHub App to authorize repository actions
-      - name: GitHub Authorization
-        uses: actions/create-github-app-token@v1
-        id: app_token
-        with: 
-          app-id: ${{ vars.PFIKEST_REPOSITORY_MANAGER_ID }}
-          private-key: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_SECRET }}
-          # optional: owner not needed IF the app has access to the repo running the workflow
-          #   if you get 'RequestError [HttpError]: Not Found 404', pass in owner
-          owner: ${{ github.repository_owner }}
-        
-      - name: Create Repository
-        id: create_repo
-        run: |
-          curl -L \
-            -X POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ steps.app_token.outputs.token }}" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/repos/PfikestInt/WorkloadTemplate/generate \
-            -d '{"owner":"PfikestInt","name":"rg-${{ github.event.inputs.environment }}-${{ github.event.inputs.role }}-${{ env.PADDED_COUNTER }}","description":"${{ github.event.inputs.description }}","include_all_branches":true,"private":false}' > results.json
-          echo "NEW_REPO=$(jq '.html_url' results.json)" >> $GITHUB_ENV
-
       - name: Create Config
-        run: echo "${{ env.NEW_REPO }}"
+        run: echo "${{ needs.create-workload-repository.outputs.repository-url }}"
         
       - name: Update Record
         uses: actions/checkout@v4
