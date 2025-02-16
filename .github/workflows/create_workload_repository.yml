@@ -4,21 +4,22 @@ on:
   workflow_call:
     inputs:
       environment-type:
-        description: "Environment"
         required: true
         type: string
       role:
-        description: "Role"
         required: true
         type: string
       counter:
-        description: "Counter"
         required: true
         type: string        
       description:
-        description: "Description"
         required: true
         type: string
+    secrets:
+      PFIKEST_REPOSITORY_MANAGER_SECRET:
+        required: true
+      PFIKEST_REPOSITORY_MANAGER_ID:
+        required: true
 
 permissions:
   id-token: write
@@ -45,7 +46,7 @@ jobs:
       uses: actions/create-github-app-token@v1
       id: app_token
       with: 
-        app-id: ${{ vars.PFIKEST_REPOSITORY_MANAGER_ID }}
+        app-id: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_ID }}
         private-key: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_SECRET }}
         # optional: owner not needed IF the app has access to the repo running the workflow
         #   if you get 'RequestError [HttpError]: Not Found 404', pass in owner

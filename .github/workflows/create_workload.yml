@@ -41,24 +41,23 @@ permissions:
   contents: write
 
 jobs:
-  create-workload-repository:
-    name: "Create Repository"
+  checkout:
+    name: Checkout
     runs-on: ubuntu-latest
-
-    # Checkout the repository to the GitHub Actions runner
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create
-        uses: ./.github/workflows/create_workload_repository.yml
-        with:
-          environment-type: environment-type
-          role: role
-          counter: counter
-          description: description
-          secrets: inherit
-
+  create-workload-repository:
+    name: "Create Repository"
+    uses: ./.github/workflows/create_workload_repository.yml
+    with:
+      environment-type: environment-type
+      role: role
+      counter: counter
+      description: description
+    secrets: inherit
+    
   create-config:
     name: "Create Config"
     runs-on: ubuntu-latest
