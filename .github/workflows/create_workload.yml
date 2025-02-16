@@ -78,19 +78,22 @@ jobs:
         with: 
           app-id: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_ID }}
           private-key: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_SECRET }}
-          owner: ${{ github.repository_owner }}
+          # owner: ${{ github.repository_owner }}
         
       - name: Update Record
         uses: actions/checkout@v4
         with:
           ref: data
           path: temp_data
-
-      - run: pip install -r requirements.txt
-
-      - run: python -m script.add_created_workload "rg-${{ github.event.inputs.role }}-${{ github.event.inputs.counter }}" "${{ github.event.inputs.description }}" "${{ github.triggering_actor }}"
-
-      - run: |
+      
+      - name: Install Requirements
+        run: pip install -r requirements.txt
+      
+      - name: Update History
+        run: python -m script.add_created_workload "rg-${{ github.event.inputs.role }}-${{ github.event.inputs.counter }}" "${{ github.event.inputs.description }}" "${{ github.triggering_actor }}"
+      
+      - name: Push History
+        run: |
           cd temp_data
           git config --global user.name 'Workload Creator'
           git config --global user.email 'workload.creator@users.noreply.github.com'
