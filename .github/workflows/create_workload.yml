@@ -68,7 +68,7 @@ jobs:
           private-key: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_SECRET }}
           # optional: owner not needed IF the app has access to the repo running the workflow
           #   if you get 'RequestError [HttpError]: Not Found 404', pass in owner
-          # owner: ${{ github.repository_owner }}
+          owner: ${{ github.repository_owner }}
         
       - name: Create Repository
         id: create_repo
