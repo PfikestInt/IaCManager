@@ -68,9 +68,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-  
+
       - name: Create Config
         run: echo "${{ needs.create-workload-repository.outputs.repository-url }}"
+    
+  update-history:
+    name: "Update History"
+    runs-on: ubuntu-latest
+    needs: create-config
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       
       - name: GitHub Authorization
         uses: actions/create-github-app-token@v1
@@ -78,7 +87,7 @@ jobs:
         with: 
           app-id: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_ID }}
           private-key: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_SECRET }}
-          # owner: ${{ github.repository_owner }}
+          owner: ${{ github.repository_owner }}
         
       - name: Update Record
         uses: actions/checkout@v4
