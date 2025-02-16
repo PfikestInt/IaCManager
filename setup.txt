@@ -1,0 +1,6 @@
+az identity create -g id-sp-iacmanager-001 -n id-sp-iacmanager-001
+az role assignment create --assignee "XXX-1d44-48e0-971a-08cf0093cd4f" --role "Managed Identity Contributor" --scope "subscriptions/XXX-1d44-48e0-971a-08cf0093cd4f"
+az role assignment create --assignee "XXX-1d44-48e0-971a-08cf0093cd4f" --role "User Access Administrator" --scope "subscriptions/XXX-1d44-48e0-971a-08cf0093cd4f"
+az role assignment create --assignee "XXX-1d44-48e0-971a-08cf0093cd4f" --role "Resource Policy Contributor" --scope "subscriptions/XXX-1d44-48e0-971a-08cf0093cd4f"
+az identity federated-credential create --name id-sp-iacmanager-001 --identity-name id-sp-iacmanager-001 --resource-group rg-sb-iac-001 --issuer "https://token.actions.githubusercontent.com" --subject "repo:PfikestInt/IaCManager:ref:refs/heads/develop" --audience "api://AzureADTokenExchange"
+az identity federated-credential create --name id-sp-iacmanager-001 --identity-name id-sp-iacmanager-001 --resource-group rg-sb-iac-001 --issuer "https://token.actions.githubusercontent.com" --subject "repo:PfikestInt/IaCManager:ref:refs/heads/main" --audience "api://AzureADTokenExchange"

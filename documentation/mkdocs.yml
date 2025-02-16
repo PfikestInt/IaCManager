@@ -7,8 +7,9 @@ nav:
 - Design:
   - Naming Convention: design/naming_convention.md
   - Sequence Diagrams:
-    - Create Repository: design/sequence_diagrams/backup.md
-    - Environment Management: design/sequence_diagrams/restore.md
+    - Create Workload: design/sequence_diagrams/create_workload.md
+    - Create Resource Group: design/sequence_diagrams/create_resource_group.md
+    - Environment Management: design/sequence_diagrams/environment_management.md
 - Repositories Created:
   - Workloads: repositories_created/workloads_created.md
 
