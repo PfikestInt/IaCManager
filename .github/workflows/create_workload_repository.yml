@@ -57,6 +57,8 @@ jobs:
           -d '{"owner":"PfikestInt","name":"rg-${{ github.event.inputs.environment-type }}-${{ github.event.inputs.role }}-${{ env.PADDED_COUNTER }}","description":"${{ github.event.inputs.description }}","include_all_branches":true,"private":false}' > results.json
         echo "REPO_URL=$(jq '.html_url' results.json)" >> $GITHUB_ENV
 
+    - run: echo "${{ env.REPO_URL }}"
+
     outputs:
       repository-url: ${{ env.REPO_URL }}
     
