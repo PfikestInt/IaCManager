@@ -57,6 +57,7 @@ jobs:
           role: role
           counter: counter
           description: description
+          secrets: inherit
 
   create-config:
     name: "Create Config"
