@@ -20,13 +20,15 @@ on:
         required: true
       PFIKEST_REPOSITORY_MANAGER_ID:
         required: true
+    outputs:
+      repository-url: ${{ jobs.create_workload_repository.outputs.repository-url }}
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  create-workload-repository:
+  create_workload_repository:
     name: "Create Workload Repository"
     runs-on: ubuntu-latest
 
