@@ -14,10 +14,8 @@ def build_repository():
 
     html_url = repository_definition["html_url"]
     full_name = repository_definition["full_name"]
-    github.clone_to(auth, full_name, "develop", "new_repo")
-
-    shutil.copy2("main.bicep", "new_repo/main.bicep")
-    github.push("new_repo", "initial commit")
+    contents_url = repository_definition["contents_url"].replace("(+path)", "")
+    github.add_file_to_repository(auth, contents_url, "main.bicep")
 
 
 if __name__ == "__main__":
