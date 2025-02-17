@@ -1,4 +1,4 @@
-name: Create Workload Repository
+name: Sub Create Workload Repository
 
 on:
   workflow_call:

@@ -1,4 +1,4 @@
-name: Create Workload Config
+name: Sub Create Workload Config
 
 on:
   workflow_call:
@@ -48,11 +48,14 @@ jobs:
             private-key: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_SECRET }}
             owner: ${{ github.repository_owner }}
           
-        - name: Update Record
+        - name: Checkout New Repository
           uses: actions/checkout@v4
           with:
             repository: ${{ github.event.inputs.repository_url }}
             path: new_repo
+          
+        - name: Check
+          run: echo ${{ github.event.inputs.repository_url }}
         
         - name: Install Requirements
           run: ls new_repo

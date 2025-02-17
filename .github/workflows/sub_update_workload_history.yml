@@ -1,4 +1,4 @@
-name: Update Workload History
+name: Sub Update Workload History
 
 on:
   workflow_call:

@@ -61,7 +61,7 @@ jobs:
     secrets: inherit
 
   create-config:
-    name: "Create Repository"
+    name: "Create Workload Config"
     needs: create-workload-repository
     uses: ./.github/workflows/sub_create_workload_config.yml
     with:
