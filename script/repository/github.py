@@ -20,6 +20,25 @@ def clone_to(repository, branch, path):
         exit(1)
 
 
+def pull(path):
+    cwd = os.curdir()
+    os.chdir(path)
+
+    command = [
+        "git",
+        "pull",
+        "-A"
+    ]
+    result = subprocess.run(command, capture_output=True, text=True)
+
+    if result.returncode > 0:
+        print(f"Return code: {result.returncode}")
+        print(f"Error: {result.stderr}")
+        exit(1)
+        
+    os.chdir(path)
+    
+
 def push(path, message):
     cwd = os.curdir()
     os.chdir(path)
