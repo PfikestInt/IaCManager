@@ -2,7 +2,7 @@
 import json
 from os import environ
 
-from . import github
+from .repository import github
 
 def build_repository():
     auth = environ["AUTH_TOKEN"]
