@@ -5,10 +5,8 @@ import requests
 
 def clone_to(repository, branch, path):
     command = [
-        "git",
+        "gh",
         "clone",
-        "-b",
-        branch,
         repository,
         path,
     ]
