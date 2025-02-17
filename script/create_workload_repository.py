@@ -15,10 +15,10 @@ def build_repository():
     html_url = repository_definition["html_url"]
     full_name = repository_definition["full_name"]
     github.clone_to(full_name, "develop", "new_repo")
-    github.pull("bicep-modules")
+    github.submodule_init()
 
-    # shutil.copy2("bicep-modules/main.bicep", "new_repo/main.bicep")
-    # github.push("new_repo", "initial commit")
+    shutil.copy2("bicep-modules/main.bicep", "new_repo/main.bicep")
+    github.push("new_repo", "initial commit")
 
 
 if __name__ == "__main__":
