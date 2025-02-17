@@ -75,7 +75,7 @@ jobs:
   update-history:
     name: "Update History"
     needs: create-config
-    uses: ./.github/workflows/create_workload_repository.yml
+    uses: ./.github/workflows/update_workload_history.yml
     with:
       environment-type: environment-type
       role: role
