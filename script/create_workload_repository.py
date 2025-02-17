@@ -1,4 +1,5 @@
 
+import json
 from os import environ
 
 import requests
@@ -21,20 +22,21 @@ def build_repository():
         "Authorization": f"Bearer {auth}",
         "X-GitHub-Api-Version": "2022-11-28",
     }
-    data = {
-            "owner":"PfikestInt",
-            "name": f"rg-{environ["ENVIRONMENT"]}-{environ["ROLE"]}-{environ["COUNTER"].zfill(3)}",
-            "description": environ["DESCRIPTION"],
-            "include_all_branches": "true",
-            "private": "false"
-        }
+    data = [
+        '"owner":"PfikestInt"',
+        f'"name":"rg-{environ["ENVIRONMENT"]}-{environ["ROLE"]}-{environ["COUNTER"].zfill(3)}"',
+        f'"description":"{environ["DESCRIPTION"]}"',
+        '"include_all_branches":true',
+        '"private":false'
+    ]
+    
     response = requests.post(
         url="https://api.github.com/repos/PfikestInt/WorkloadTemplate/generate",
         headers=headers,
-        data=data,
+        data="{" + ",".join(data) + "}",
     )
     print(response.text)
 
-    
+
 if __name__ == "__main__":
     build_repository()
