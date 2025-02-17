@@ -184,9 +184,7 @@ def add_file_to_repository(authorization, url, filename, message):
 
     if response.get("status", "200") != "200":
         print("{" + ",".join(data) + "}")
-        print(response)
-        for error in response["errors"]:
-            print(error)
+        print(response["message"])
         exit(1)
     
     return response
