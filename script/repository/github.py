@@ -27,7 +27,6 @@ def pull(path):
     command = [
         "git",
         "pull",
-        "-A"
     ]
     result = subprocess.run(command, capture_output=True, text=True)
 
