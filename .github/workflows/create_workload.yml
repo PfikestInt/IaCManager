@@ -71,6 +71,9 @@ jobs:
         env:
           AUTH_TOKEN: ${{ steps.app_token.outputs.token }}
         run: python -m script.create_workload_repository
+      
+      - name: Hello
+        run: echo "Hello"
 
   # create-workload-repository:
   #   name: "Create Repository"
