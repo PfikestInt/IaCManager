@@ -52,7 +52,7 @@ jobs:
   create-workload-repository:
     name: "Create Repository"
     needs: checkout
-    uses: ./.github/workflows/create_workload_repository.yml
+    uses: ./.github/workflows/sub_create_workload_repository.yml
     with:
       environment-type: environment-type
       role: role
@@ -62,7 +62,7 @@ jobs:
 
   create-config:
     name: "Create Repository"
-    needs: checkout
+    needs: create-workload-repository
     uses: ./.github/workflows/sub_create_workload_config.yml
     with:
       environment-type: environment-type
@@ -75,7 +75,7 @@ jobs:
   update-history:
     name: "History"
     needs: create-config
-    uses: ./.github/workflows/update_workload_history.yml
+    uses: ./.github/workflows/sub_update_workload_history.yml
     with:
       environment-type: environment-type
       role: role
