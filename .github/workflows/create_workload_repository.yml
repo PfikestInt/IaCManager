@@ -73,7 +73,11 @@ jobs:
             https://api.github.com/repos/PfikestInt/WorkloadTemplate/generate \
             -d '{"owner":"PfikestInt","name":"rg-${{ env.ROLE }}-${{ env.PADDED_COUNTER }}","description":"${{ env.DESCRIPTION }}","include_all_branches":true,"private":false}' > results.json && \
           export REPO_URL=$(jq '.html_url' results.json)
-          echo "Created: ${REPO_URL}"
+          if [[ -z "${REOP_URL}" ]] then \
+            echo "Created: ${REPO_URL}" \
+          else \
+            echo "Uh oh" \
+          fi
 
   # update_history:
   #   name: "Update History"
