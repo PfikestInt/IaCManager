@@ -173,7 +173,7 @@ def add_file_to_repository(authorization, url, filename, message):
     }
     data = [
         f'"message":"{message}"',
-        f'"content":"{b64encode(contents.encode()).decode()}',
+        f'"content":"{b64encode(contents.encode()).decode()}"',
     ]
 
     response = requests.put(
