@@ -40,7 +40,14 @@ on:
 permissions:
   id-token: write
   contents: write
-        
+
+env:
+  SUBSCRIPTION: ${{ github.event.inputs.subscription }}
+  ENVIRONMENT: ${{ github.event.inputs.environment-type }}
+  ROLE: ${{ github.event.inputs.role}}
+  COUNTER: ${{ github.event.inputs.counter }}
+  DESCRIPTION: ${{ github.event.inputs.description }}
+
 jobs:
   checkout:
     name: Checkout
@@ -48,37 +55,53 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      
+      - name:
+        run: pip install -r requirements
+      
+      - name: GitHub Authorization
+        uses: actions/create-github-app-token@v1
+        id: app_token
+        with: 
+          app-id: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_ID }}
+          private-key: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_SECRET }}
+          owner: ${{ github.repository_owner }}
+      
+      - name: Create Repository
+        env:
+          AUTH_TOKEN: ${{ steps.app_token.outputs.token }}
+        run: python -m script.create_workload_repository
 
-  create-workload-repository:
-    name: "Create Repository"
-    needs: checkout
-    uses: ./.github/workflows/sub_create_workload_repository.yml
-    with:
-      environment-type: environment-type
-      role: role
-      counter: counter
-      description: description
-    secrets: inherit
+  # create-workload-repository:
+  #   name: "Create Repository"
+  #   needs: checkout
+  #   uses: ./.github/workflows/sub_create_workload_repository.yml
+  #   with:
+  #     environment-type: environment-type
+  #     role: role
+  #     counter: counter
+  #     description: description
+  #   secrets: inherit
 
-  create-config:
-    name: "Create Workload Config"
-    needs: create-workload-repository
-    uses: ./.github/workflows/sub_create_workload_config.yml
-    with:
-      environment-type: environment-type
-      role: role
-      counter: counter
-      description: description
-      repository_url: ${{ needs.create-workload-repository.outputs.repository-url }}
-    secrets: inherit
+  # create-config:
+  #   name: "Create Workload Config"
+  #   needs: create-workload-repository
+  #   uses: ./.github/workflows/sub_create_workload_config.yml
+  #   with:
+  #     environment-type: environment-type
+  #     role: role
+  #     counter: counter
+  #     description: description
+  #     repository_url: ${{ needs.create-workload-repository.outputs.repository-url }}
+  #   secrets: inherit
     
-  update-history:
-    name: "History"
-    needs: create-config
-    uses: ./.github/workflows/sub_update_workload_history.yml
-    with:
-      environment-type: environment-type
-      role: role
-      counter: counter
-      description: description
-    secrets: inherit
+  # update-history:
+  #   name: "History"
+  #   needs: create-config
+  #   uses: ./.github/workflows/sub_update_workload_history.yml
+  #   with:
+  #     environment-type: environment-type
+  #     role: role
+  #     counter: counter
+  #     description: description
+  #   secrets: inherit
