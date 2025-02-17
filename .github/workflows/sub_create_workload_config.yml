@@ -38,7 +38,7 @@ jobs:
           uses: actions/checkout@v4
 
         - name: Zero Pad
-          run: echo "PADDED_COUNTER=$(printf '%03d' ${{ github.event.inputs.counter }})" >> $GITHUB_ENV
+          run: echo "FINAL_SEGMENTS=$(echo "$url" | awk -F'/' '{print $(NF-1)"/"$(NF)}')" >> $GITHUB_ENV
             
         - name: GitHub Authorization
           uses: actions/create-github-app-token@v1
@@ -51,7 +51,7 @@ jobs:
         - name: Checkout New Repository
           uses: actions/checkout@v4
           with:
-            repository: ${{ github.event.inputs.repository_url }}
+            repository: ${{ env.FINAL_SEGMENTS }}
             path: new_repo
           
         - name: Check
