@@ -1,4 +1,5 @@
-from os import environ, path
+from os import environ
+import pprint
 
 from .repository import github
 
@@ -8,7 +9,7 @@ def build_repository():
     name = f"rg-{environ["ENVIRONMENT"]}-{environ["ROLE"]}-{environ["COUNTER"].zfill(3)}"
     repository_definition = github.create_repository_from_template(auth, name, environ["DESCRIPTION"])
 
-    print(repository_definition)
+    pprint.pprint(repository_definition)
 
 
 if __name__ == "__main__":
