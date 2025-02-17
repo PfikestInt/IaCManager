@@ -15,9 +15,8 @@ def build_repository():
     html_url = repository_definition["html_url"]
     full_name = repository_definition["full_name"]
     github.clone_to(auth, full_name, "develop", "new_repo")
-    github.submodule_init()
 
-    shutil.copy2("bicep-modules/main.bicep", "new_repo/main.bicep")
+    shutil.copy2("main.bicep", "new_repo/main.bicep")
     github.push("new_repo", "initial commit")
 
 
