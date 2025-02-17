@@ -74,8 +74,11 @@ jobs:
             -d '{"owner":"PfikestInt","name":"rg-${{ env.ROLE }}-${{ env.PADDED_COUNTER }}","description":"${{ env.DESCRIPTION }}","include_all_branches":true,"private":false}' > results.json
           echo "REPO_URL=$(jq '.html_url' results.json)" >> "$GITHUB_OUTPUT"
       
-      - name: Validate
-        run: echo "${{ steps.create_repo.outputs.REPO_URL }}"
+      - name: Skip If Successful
+        if: steps.create_repo.outputs.REPO_URL == null
+        run: |
+          echo "Repository not created. Does it already exist?"
+          exit(1)
     
   # update_history:
   #   name: "Update History"
