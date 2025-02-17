@@ -1,0 +1,67 @@
+name: Update Workload History
+
+on:
+  workflow_call:
+    inputs:
+      environment-type:
+        required: true
+        type: string
+      role:
+        required: true
+        type: string
+      counter:
+        required: true
+        type: string        
+      description:
+        required: true
+        type: string
+    secrets:
+      PFIKEST_REPOSITORY_MANAGER_SECRET:
+        required: true
+      PFIKEST_REPOSITORY_MANAGER_ID:
+        required: true
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  update-history:
+      name: "Update History"
+      runs-on: ubuntu-latest
+  
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: Zero Pad
+          run: echo "PADDED_COUNTER=$(printf '%03d' ${{ github.event.inputs.counter }})" >> $GITHUB_ENV
+            
+        - name: GitHub Authorization
+          uses: actions/create-github-app-token@v1
+          id: app_token
+          with: 
+            app-id: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_ID }}
+            private-key: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_SECRET }}
+            owner: ${{ github.repository_owner }}
+          
+        - name: Update Record
+          uses: actions/checkout@v4
+          with:
+            ref: data
+            path: temp_data
+        
+        - name: Install Requirements
+          run: pip install -r requirements.txt
+        
+        - name: Update History
+          run: python -m script.add_created_workload "rg-${{ github.event.inputs.environment-type }}-${{ github.event.inputs.role }}-${{ env.PADDED_COUNTER }}" "${{ github.event.inputs.description }}" "${{ github.triggering_actor }}"
+        
+        - name: Push History
+          run: |
+            cd temp_data
+            git config --global user.name 'Workload Creator'
+            git config --global user.email 'workload.creator@users.noreply.github.com'
+            git commit -am "Automated update"
+            git push
+  
