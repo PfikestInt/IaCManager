@@ -73,7 +73,7 @@ jobs:
         run: python -m script.create_workload_repository
 
       - name: Hello
-        run: echo "Hello"
+        run: ls
 
   # create-workload-repository:
   #   name: "Create Repository"

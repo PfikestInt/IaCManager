@@ -1,4 +1,22 @@
+import subprocess
+
 import requests
+
+
+def clone_to(repository, branch, path):
+    command = [
+        "git",
+        "clone",
+        "-b",
+        branch,
+        repository,
+        path,
+    ]
+    result = subprocess.run(command, capture_output=True, text=True)
+
+    if result.returncode >= 0:
+        print(f"Return code: {result.returncode}")
+        print(f"Error: {result.stderr}")
 
 
 def create_repository_from_template(authorization, name, description):
