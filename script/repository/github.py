@@ -5,12 +5,63 @@ import requests
 
 
 def clone_to(repository, branch, path):
+    """
+                  git config --global user.email "hi@aliasifkhan.com"
+                  git config --global user.name "aliasifk"
+                  git config --global credential.helper cache
+                  git clone https://${{secrets.ACCESS_TOKEN}}@github.com/aliasifk/xxxxxx
+                  cp index.js clonedFolder/ -f
+                  cd clonedFolder
+                  git add .
+                  git commit -m "$(date)"
+                  git push 
+    """   
     command = [
-        "gh",
-        "repo",
+        "git",
+        "config",
+        "--global",
+        "user.email",
+        "repo.creator@noreply.github.com",
+    ]
+    result = subprocess.run(command, capture_output=True, text=True)
+
+    if result.returncode > 0:
+        print(f"Return code: {result.returncode}")
+        print(f"Error: {result.stderr}")
+        exit(1)
+
+    command = [
+        "git",
+        "config",
+        "--global",
+        "user.name",
+        "Repo Creator",
+    ]
+    result = subprocess.run(command, capture_output=True, text=True)
+
+    if result.returncode > 0:
+        print(f"Return code: {result.returncode}")
+        print(f"Error: {result.stderr}")
+        exit(1)
+
+    command = [
+        "git",
+        "config",
+        "--global",
+        "credential.helper",
+        "cache",
+    ]
+    result = subprocess.run(command, capture_output=True, text=True)
+
+    if result.returncode > 0:
+        print(f"Return code: {result.returncode}")
+        print(f"Error: {result.stderr}")
+        exit(1)
+
+    command = [
+        "git",
         "clone",
-        repository,
-        path,
+        f"https://{environ["GH_TOKEN"]}@github.com/{repository}",
     ]
     result = subprocess.run(command, capture_output=True, text=True)
 
