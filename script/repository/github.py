@@ -174,7 +174,7 @@ def add_file_to_repository(authorization, url, filename, message):
     data = [
         '"owner":"PfikestInt"',
         f'"message":"{message}"',
-        f'"content":"{b64encode(contents).decode("ascii")}',
+        f'"content":"{b64encode(contents.encode()).decode()}',
     ]
 
     response = requests.put(
