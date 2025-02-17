@@ -172,7 +172,6 @@ def add_file_to_repository(authorization, url, filename, message):
         "X-GitHub-Api-Version": "2022-11-28",
     }
     data = [
-        '"owner":"PfikestInt"',
         f'"message":"{message}"',
         f'"content":"{b64encode(contents.encode()).decode()}',
     ]
@@ -184,6 +183,7 @@ def add_file_to_repository(authorization, url, filename, message):
     ).json()
 
     if response.get("status", "200") != "200":
+        print("{" + ",".join(data) + "}")
         print(response)
         for error in response["errors"]:
             print(error)
