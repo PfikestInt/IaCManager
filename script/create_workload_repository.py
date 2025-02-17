@@ -36,7 +36,7 @@ def build_repository():
         data="{" + ",".join(data) + "}",
     )
     print(response.json())
-    print(type(response.json()))
+    print(response.json().keys())
 
 if __name__ == "__main__":
     build_repository()
