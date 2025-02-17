@@ -4,7 +4,7 @@ import subprocess
 import requests
 
 
-def clone_to(repository, branch, path):
+def clone_to(auth, repository, branch, path):
     """
                   git config --global user.email "hi@aliasifkhan.com"
                   git config --global user.name "aliasifk"
@@ -61,7 +61,8 @@ def clone_to(repository, branch, path):
     command = [
         "git",
         "clone",
-        f"https://{environ["GH_TOKEN"]}@github.com/{repository}",
+        f"https://{auth}@github.com/{repository}",
+        path,
     ]
     result = subprocess.run(command, capture_output=True, text=True)
 
