@@ -14,7 +14,7 @@ def build_repository():
 
     html_url = repository_definition["html_url"]
     full_name = repository_definition["full_name"]
-    contents_url = repository_definition["contents_url"].replace("(+path)", "")
+    contents_url = repository_definition["contents_url"].replace("{+path}", "")
     github.add_file_to_repository(auth, contents_url, "main.bicep", "initial commit")
 
 
