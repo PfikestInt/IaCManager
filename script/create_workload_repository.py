@@ -1,6 +1,8 @@
 
 import json
-from os import environ
+from os import environ, path
+import sys
+sys.path.append(path.dirname(__file__))
 
 from repository import github
 
