@@ -1,6 +1,6 @@
 from os import environ, path
 
-from .repository import github
+from repository import github
 
 def build_repository():
     auth = environ["AUTH_TOKEN"]
