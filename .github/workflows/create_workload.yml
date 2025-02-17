@@ -61,19 +61,19 @@ jobs:
     secrets: inherit
 
   create-config:
-    name: "Create Config"
-    runs-on: ubuntu-latest
-    needs: create-workload-repository
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Create Config
-        run: echo "${{ needs.create-workload-repository.outputs.repository-url }}"
+    name: "Create Repository"
+    needs: checkout
+    uses: ./.github/workflows/sub_create_workload_config.yml
+    with:
+      environment-type: environment-type
+      role: role
+      counter: counter
+      description: description
+      repository_url: ${{ needs.create-workload-repository.outputs.repository-url }}
+    secrets: inherit
     
   update-history:
-    name: "Update History"
+    name: "History"
     needs: create-config
     uses: ./.github/workflows/update_workload_history.yml
     with:
