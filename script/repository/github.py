@@ -6,6 +6,7 @@ import requests
 def clone_to(repository, branch, path):
     command = [
         "gh",
+        "repo",
         "clone",
         repository,
         path,
@@ -15,6 +16,7 @@ def clone_to(repository, branch, path):
     if result.returncode >= 0:
         print(f"Return code: {result.returncode}")
         print(f"Error: {result.stderr}")
+        exit(1)
 
 
 def create_repository_from_template(authorization, name, description):
