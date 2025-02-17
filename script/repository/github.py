@@ -21,7 +21,7 @@ def clone_to(repository, branch, path):
 
 
 def pull(path):
-    cwd = os.curdir()
+    cwd = os.curdir
     os.chdir(path)
 
     command = [
@@ -37,10 +37,10 @@ def pull(path):
         exit(1)
         
     os.chdir(path)
-    
+
 
 def push(path, message):
-    cwd = os.curdir()
+    cwd = os.curdir
     os.chdir(path)
 
     command = [
