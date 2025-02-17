@@ -13,7 +13,7 @@ def clone_to(repository, branch, path):
     ]
     result = subprocess.run(command, capture_output=True, text=True)
 
-    if result.returncode >= 0:
+    if result.returncode > 0:
         print(f"Return code: {result.returncode}")
         print(f"Error: {result.stderr}")
         exit(1)
