@@ -69,7 +69,7 @@ jobs:
     
       - name: Create Repository
         env:
-          AUTH_TOKEN: ${{ steps.app_token.outputs.token }}
+          GH_TOKEN: ${{ steps.app_token.outputs.token }}
         run: python -m script.create_workload_repository
 
       - name: Hello
