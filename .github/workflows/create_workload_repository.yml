@@ -72,8 +72,8 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/PfikestInt/WorkloadTemplate/generate \
             -d '{"owner":"PfikestInt","name":"rg-${{ env.ROLE }}-${{ env.PADDED_COUNTER }}","description":"${{ env.DESCRIPTION }}","include_all_branches":true,"private":false}' > results.json
-          repo_url=$(jq '.html_url' results.json)
-          if [[ -z "${repo_url}"]] then echo "Created ${repo_url}"; else cat results.json; exit(1); fi
+          export REPO_URL=$(jq '.html_url' results.json)
+          if [[ -z "${REPO_URL}" ]] then echo "Created ${REPO_URL}" else exit(1) fi
     
   # update_history:
   #   name: "Update History"
