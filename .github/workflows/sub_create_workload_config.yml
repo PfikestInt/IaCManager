@@ -37,8 +37,13 @@ jobs:
         - name: Checkout
           uses: actions/checkout@v4
 
-        - name: Zero Pad
-          run: echo "FINAL_SEGMENTS=$(echo "$url" | awk -F'/' '{print $(NF-1)"/"$(NF)}')" >> $GITHUB_ENV
+        - name: Get Repo Name
+          run: echo "FINAL_SEGMENTS=$(echo "${{ github.event.inputs.repository_url }}" | awk -F'/' '{print $(NF-1)"/"$(NF)}')" >> $GITHUB_ENV
+          
+        - name: Check
+          run: |
+            echo ${{ github.event.inputs.repository_url }}
+            echo ${{ env.FINAL_SEGMENTS }}
             
         - name: GitHub Authorization
           uses: actions/create-github-app-token@v1
@@ -53,9 +58,6 @@ jobs:
           with:
             repository: ${{ env.FINAL_SEGMENTS }}
             path: new_repo
-          
-        - name: Check
-          run: echo ${{ github.event.inputs.repository_url }}
         
         - name: Install Requirements
           run: ls new_repo
