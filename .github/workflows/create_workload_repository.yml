@@ -72,7 +72,7 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/PfikestInt/WorkloadTemplate/generate \
             -d '{"owner":"PfikestInt","name":"rg-${{ env.ROLE }}-${{ env.PADDED_COUNTER }}","description":"${{ env.DESCRIPTION }}","include_all_branches":true,"private":false}')
-          echo "response=$RESPONSE" >> "$GITHUB_OUTPUT"
+          echo "response='$RESPONSE'" >> "$GITHUB_OUTPUT"
       
       - name: Skip If Successful
         if: (contains(steps.create_repo.outputs.response, 'errors'))
