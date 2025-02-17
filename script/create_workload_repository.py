@@ -4,7 +4,7 @@ from os import environ, path
 import sys
 sys.path.append(path.dirname(__file__))
 
-from repository import github
+from .repository import github
 
 def build_repository():
     auth = environ["AUTH_TOKEN"]
