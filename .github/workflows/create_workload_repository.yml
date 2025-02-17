@@ -75,11 +75,15 @@ jobs:
           echo "REPO_URL=$(jq '.html_url' results.json)" >> "$GITHUB_OUTPUT"
       
       - name: Skip If Successful
-        if: (steps.create_repo.outputs.REPO_URL != null || steps.create_repo == '' || steps.create_repo.REPO_URL == 'null')
+        if: (steps.create_repo.outputs.REPO_URL == '')
         run: |
           echo "${{ steps.create_repo.outputs.REPO_URL }}"
           echo "Repository not created. Does it already exist?"
           exit(1)
+      
+      - name: Completed
+        if: (steps.create_repo.outputs.REPO_URL != '')
+        run: echo "Created ${{ steps.create_repo.outputs.REPO_URL }}"
     
   # update_history:
   #   name: "Update History"
