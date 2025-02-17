@@ -65,24 +65,24 @@ jobs:
         if: ${{ env.PADDED_COUNTER != '' && env.PADDED_COUNTER != '000'}}
         id: create_repo
         run: |
-          RESPONSE=$(curl -L \
+          repo_url=$(curl -L \
             -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ steps.app_token.outputs.token }}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/PfikestInt/WorkloadTemplate/generate \
             -d '{"owner":"PfikestInt","name":"rg-${{ env.ROLE }}-${{ env.PADDED_COUNTER }}","description":"${{ env.DESCRIPTION }}","include_all_branches":true,"private":false}')
-          echo "response='$RESPONSE'" >> "$GITHUB_OUTPUT"
+          echo "repo_url=$(jq '.html_url' results.json)" >> "$GITHUB_OUTPUT"
       
       - name: Skip If Successful
-        if: (contains(steps.create_repo.outputs.response, 'errors'))
+        if: (!startsWith(steps.create_repo.outputs.repo_url, 'http'))
         run: |
           echo "Repository not created. Does it already exist?"
           exit(1)
       
       - name: Completed
-        if: (!contains(steps.create_repo.outputs.response, 'errors'))
-        run: echo "Created ${{ steps.create_repo.outputs.response }}"
+        if: (steps.create_repo.outputs.repo_url != '')
+        run: echo "Created ${{ steps.create_repo.outputs.repo_url }}"
     
   # update_history:
   #   name: "Update History"
