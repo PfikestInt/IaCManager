@@ -66,11 +66,14 @@ jobs:
           app-id: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_ID }}
           private-key: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_SECRET }}
           owner: ${{ github.repository_owner }}
-      
+
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+    
       - name: Create Repository
         env:
           AUTH_TOKEN: ${{ steps.app_token.outputs.token }}
-        run: python3 -m script.create_workload_repository
+        run: python -m script.create_workload_repository
       
       - name: Hello
         run: echo "Hello"
