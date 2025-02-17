@@ -74,37 +74,11 @@ jobs:
     
   update-history:
     name: "Update History"
-    runs-on: ubuntu-latest
     needs: create-config
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      
-      - name: GitHub Authorization
-        uses: actions/create-github-app-token@v1
-        id: app_token
-        with: 
-          app-id: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_ID }}
-          private-key: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_SECRET }}
-          owner: ${{ github.repository_owner }}
-        
-      - name: Update Record
-        uses: actions/checkout@v4
-        with:
-          ref: data
-          path: temp_data
-      
-      - name: Install Requirements
-        run: pip install -r requirements.txt
-      
-      - name: Update History
-        run: python -m script.add_created_workload "rg-${{ github.event.inputs.role }}-${{ github.event.inputs.counter }}" "${{ github.event.inputs.description }}" "${{ github.triggering_actor }}"
-      
-      - name: Push History
-        run: |
-          cd temp_data
-          git config --global user.name 'Workload Creator'
-          git config --global user.email 'workload.creator@users.noreply.github.com'
-          git commit -am "Automated update"
-          git push
+    uses: ./.github/workflows/create_workload_repository.yml
+    with:
+      environment-type: environment-type
+      role: role
+      counter: counter
+      description: description
+    secrets: inherit
