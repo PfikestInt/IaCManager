@@ -12,8 +12,8 @@ def build_repository():
     # pprint.pprint(repository_definition)
 
     html_url = repository_definition["html_url"]
-    ssl_url = repository_definition["ssl_url"]
-    github.clone_to(ssl_url, "develop", "new_repo")
+    ssh_url = repository_definition["ssh_url"]
+    github.clone_to(ssh_url, "develop", "new_repo")
 
 if __name__ == "__main__":
     build_repository()
