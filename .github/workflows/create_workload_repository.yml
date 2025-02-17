@@ -78,10 +78,11 @@ jobs:
         if: (!startsWith(steps.create_repo.outputs.repo_url, 'http'))
         run: |
           echo "Repository not created. Does it already exist?"
+          echo "Response: ${{ steps.create_repo.outputs.repo_url }}"
           exit(1)
       
       - name: Completed
-        if: (steps.create_repo.outputs.repo_url != '')
+        if: (startsWith(steps.create_repo.outputs.repo_url, 'http'))
         run: echo "Created ${{ steps.create_repo.outputs.repo_url }}"
     
   # update_history:
