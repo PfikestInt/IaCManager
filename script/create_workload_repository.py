@@ -35,8 +35,8 @@ def build_repository():
         headers=headers,
         data="{" + ",".join(data) + "}",
     )
-    print(response.text)
-
+    print(response.json())
+    print(type(response.json()))
 
 if __name__ == "__main__":
     build_repository()
