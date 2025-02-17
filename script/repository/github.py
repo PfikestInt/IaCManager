@@ -3,10 +3,7 @@ from base64 import b64encode
 import requests
 
 
-def add_file_to_repository(authorization, url, filename, message):
-    with open(filename, "r") as file_in:
-        contents = file_in.read()
-
+def add_file_to_repository(authorization, url, filename, message, contents):
     headers = {
         "Accept": "application/vnd.github+json",
         "Authorization": f"Bearer {authorization}",

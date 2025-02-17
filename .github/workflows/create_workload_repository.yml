@@ -1,0 +1,118 @@
+name: "Create Workload Repository"
+
+on:
+  workflow_dispatch: 
+    inputs:
+      environment_type:
+        description: "Environment"
+        required: true
+        type: choice
+        options:
+        - "sb"
+        - "d"
+        - "t"
+        - "s"
+        - "p"
+        - "np"
+      role:
+        description: "Role"
+        required: true
+        type: string
+      counter:
+        description: "Counter"
+        required: true
+        default: '1'
+        type: string        
+      description:
+        description: "Description"
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: write
+
+env:
+  ENVIRONMENT: ${{ github.event.inputs.environment_type }}
+  ROLE: ${{ github.event.inputs.role}}
+  COUNTER: ${{ github.event.inputs.counter }}
+  DESCRIPTION: ${{ github.event.inputs.description }}
+
+jobs:
+  create_workload_repository:
+    name: Create Repository
+    runs-on: ubuntu-latest
+
+    outputs:
+      repository-url: ${{ steps.create_repo.outputs.REPO_URL }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Zero Pad
+        run: echo "PADDED_COUNTER=$(printf '%03d' ${{ env.COUNTER }})" >> $GITHUB_ENV
+
+      - name: GitHub Authorization
+        uses: actions/create-github-app-token@v1
+        id: app_token
+        with: 
+          app-id: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_ID }}
+          private-key: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_SECRET }}
+          owner: ${{ github.repository_owner }}
+        
+      - name: Create Repository
+        if: ${{ env.PADDED_COUNTER != '' && env.PADDED_COUNTER != '000'}}
+        id: create_repo
+        run: |
+          curl -L \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ steps.app_token.outputs.token }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/PfikestInt/WorkloadTemplate/generate \
+            -d '{"owner":"PfikestInt","name":"rg-${{ env.ROLE }}-${{ env.PADDED_COUNTER }}","description":"${{ env.DESCRIPTION }}","include_all_branches":true,"private":false}' > results.json
+          echo "REPO_URL=$(jq '.html_url' results.json)" >> "$GITHUB_OUTPUT"
+      
+      - name: Validate
+        run: echo "${{ steps.create_repo.outputs.REPO_URL }}"
+    
+  # update_history:
+  #   name: "Update History"
+  #   runs-on: ubuntu-latest
+  #   needs: create_workload_repository
+
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
+
+  #     - name: Zero Pad
+  #       run: echo "PADDED_COUNTER=$(printf '%03d' ${{ github.event.inputs.counter }})" >> $GITHUB_ENV
+          
+  #     - name: GitHub Authorization
+  #       uses: actions/create-github-app-token@v1
+  #       id: app_token
+  #       with: 
+  #         app-id: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_ID }}
+  #         private-key: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_SECRET }}
+  #         owner: ${{ github.repository_owner }}
+        
+  #     - name: Update Record
+  #       uses: actions/checkout@v4
+  #       with:
+  #         ref: data
+  #         path: temp_data
+      
+  #     - name: Install Requirements
+  #       run: pip install -r requirements.txt
+      
+  #     - name: Update History
+  #       run: python -m script.add_created_workload "rg-${{ github.event.inputs.environment-type }}-${{ github.event.inputs.role }}-${{ env.PADDED_COUNTER }}" "${{ github.event.inputs.description }}" "${{ github.triggering_actor }}"
+      
+  #     - name: Push History
+  #       run: |
+  #         cd temp_data
+  #         git config --global user.name 'Workload Creator'
+  #         git config --global user.email 'workload.creator@users.noreply.github.com'
+  #         git commit -am "Automated update"
+  #         git push
