@@ -79,12 +79,9 @@ jobs:
         run: echo "RESOURCE_GROUP_NAME='rg-${{ env.ENVIRONMENT_TYPE }}-${{ env.ROLE }}-${{ env.COUNTER }}'" >> $GITHUB_ENV
 
       - name: Azure CLI script
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
-          inlineScript: |
-            echo $RESOURCE_GROUP_NAME
-            echo $(az group exists --name "${{ env.RESOURCE_GROUP_NAME }}")
+        run: |
+          echo "${{ env.RESOURCE_GROUP_NAME }}"
+          az group exists --name "${{ env.RESOURCE_GROUP_NAME }}"
   
   # create_workload_repository:
   #   name: Create Repository
