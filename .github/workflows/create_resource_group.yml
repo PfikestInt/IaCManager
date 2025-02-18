@@ -71,7 +71,9 @@ jobs:
       
       - name: Zero Padded
         if: ${{ steps.padding.counter == '' || steps.padding.counter == '000'}}
-        run: exit(1)
+        run: |
+          echo "${{ steps.padding.counter }}"
+          exit(1)
       
       - name: Check Exitence
         run: echo $(az groups exists "rg-${{ steps.padding.counter }}-${{ env.ROLE }}-${{ env.PADDED_COUNTER }}")
