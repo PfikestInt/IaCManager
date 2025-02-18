@@ -1,3 +1,0 @@
-[submodule "bicep-modules"]
-	path = bicep-modules
-	url = git@github.com:PfikestInt/bicep-modules.git
