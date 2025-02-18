@@ -12,9 +12,4 @@ locals {
     product     = var.product
     description = var.description
   }
-
-  naming = {
-    identity       = var.location == "eastus" ? "id-${var.environment}-github-${var.counter}" : "id-${var.environment}-github-${var.location}-${var.counter}"
-    resource_group = var.location == "eastus" ? "rg-${var.environment}-${var.role}-${var.counter}" : "rg-${var.environment}-${var.role}-${var.location}-${var.counter}"
-  }
 }

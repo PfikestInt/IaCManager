@@ -52,3 +52,8 @@ variable "description" {
   description = "A description of the reason for existence--used in resource group tags.."
   type        = string
 }
+
+variable "repository_name" {
+  description = "The organization/repo name to use for the federated credentials."
+  type        = string
+}
