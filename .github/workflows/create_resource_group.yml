@@ -75,17 +75,16 @@ jobs:
           echo "${{ steps.padding.counter }}"
           exit(1)
       
-      - name: Check Exitence
-        run: |
-          echo "rg-${{ env.ENVIRONMENT_TYPE }}-${{ env.ROLE }}-${{ env.COUNTER }}"
-          echo $(az group exists "rg-${{ env.ENVIRONMENT_TYPE }}-${{ env.ROLE }}-${{ env.COUNTER }}")
+      - name: Set Resource Group Name
+        run: export RESOURCE_GROUP_NAME="rg-${{ env.ENVIRONMENT_TYPE }}-${{ env.ROLE }}-${{ env.COUNTER }}"
 
       - name: Azure CLI script
         uses: azure/cli@v2
         with:
           azcliversion: latest
           inlineScript: |
-            echo "hello"
+            echo $RESOURCE_GROUP_NAME
+            echo $(az group exists --name "${{ env.RESOURCE_GROUP_NAME }}")
   
   # create_workload_repository:
   #   name: Create Repository
