@@ -39,3 +39,21 @@ module "resource_group" {
     }
   }
 }
+
+resource "azurerm_resource_group_policy_assignment" "azure_cis_policy" {
+  resource_group_id    = module.resource_group.resource_id
+  policy_definition_id = "/providers/Microsoft.Authorization/policySetDefinitions/fe7782e4-6ff3-4e39-8d8a-64b6f7b82c85"
+  name                 = "CIS Azure Foundations v2.1.0"
+
+  # 2025-02-18: Accommodate a bug in the definition
+  parameters = <<-EOT
+  {
+    "operationName-c5447c04-a4d7-4ba8-a263-c9ee321a6858": { 
+      "value": "Microsoft.Authorization/policyAssignments/write" 
+    },
+    "operationName-b954148f-4c11-4c38-8221-be76711e194a": {
+      "value": "Microsoft.Sql/servers/firewallRules/write"
+    }
+  }
+  EOT
+}
