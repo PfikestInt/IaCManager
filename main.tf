@@ -1,3 +1,6 @@
+data "azurerm_subscription" "current" {
+}
+
 resource "azurerm_user_assigned_identity" "managed_identity" {
   location            = var.location
   name                = var.location == "eastus" ? "id-${var.environment}-github-001" : "id-${var.environment}-github-${var.location}-001"
