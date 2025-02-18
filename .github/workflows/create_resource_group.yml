@@ -67,7 +67,7 @@ jobs:
 
       - name: Zero Pad
         id: padding
-        run: export COUNTER=$(printf '%03d' ${{ env.COUNTER }})"
+        run: export COUNTER=$(printf '%03d' ${{ env.COUNTER }})
       
       - name: Zero Padded
         if: ${{ env.COUNTER == '' || env.COUNTER == '000'}}
@@ -76,7 +76,9 @@ jobs:
           exit(1)
       
       - name: Check Exitence
-        run: echo $(az groups exists "rg-${{ env.ENVIRONMENT_TYPE }}-${{ env.ROLE }}-${{ env.COUNTER }}")
+        run: |
+          echo "rg-${{ env.ENVIRONMENT_TYPE }}-${{ env.ROLE }}-${{ env.COUNTER }}"
+          echo $(az groups exists "rg-${{ env.ENVIRONMENT_TYPE }}-${{ env.ROLE }}-${{ env.COUNTER }}")
 
       - name: Azure CLI script
         uses: azure/cli@v2
