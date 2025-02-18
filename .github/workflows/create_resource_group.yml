@@ -61,9 +61,9 @@ jobs:
       - name: Azure login
         uses: azure/login@v2
         with:
-          client-id: vars.AZURE_CLIENT_ID
+          client-id: "8b6f2c67-1d44-48e0-971a-08cf0093cd4f"
+          subscription-id: "46b82283-ba32-4501-a19e-7b75892faf7f"
           tenant-id: "d3994d90-925b-4938-badd-e17aed9acc0a"
-          subscription-id: vars.AZURE_SUBSCRIPTION_ID
 
       - name: Zero Pad
         id: padding
