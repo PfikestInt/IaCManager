@@ -1,4 +1,4 @@
-name: "Create Workload Repository"
+name: "Create Resource Group"
 
 on:
   workflow_dispatch: 
