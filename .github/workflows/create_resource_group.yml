@@ -82,7 +82,7 @@ jobs:
           exit(1)
       
       - name: Set Resource Group Name
-        run: echo "RESOURCE_GROUP_NAME='rg-${{ env.ENVIRONMENT_TYPE }}-${{ env.ROLE }}-${{ env.COUNTER }}'" >> $GITHUB_ENV
+        run: echo "RESOURCE_GROUP_NAME=rg-${{ env.ENVIRONMENT_TYPE }}-${{ env.ROLE }}-${{ env.COUNTER }}" >> $GITHUB_ENV
 
       - name: Azure CLI script
         run: |
