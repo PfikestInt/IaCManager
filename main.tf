@@ -7,7 +7,7 @@ resource "azurerm_user_assigned_identity" "managed_identity" {
   resource_group_name = var.location == "eastus" ? "rg-${var.environment}-${var.role}-${var.counter}" : "rg-${var.environment}-${var.role}-${var.location}-${var.counter}"
   tags                = local.tags
 }
-
+yo test
 resource "azurerm_federated_identity_credential" "credentials" {
   name                = "github-main"
   resource_group_name = module.resource_group.name
