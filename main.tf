@@ -21,7 +21,7 @@ module "resource_group" {
       principal_id               = azurerm_user_assigned_identity.managed_identity.principal_id
       role_definition_id_or_name = "Resource Policy Contributor"
     }
-    "roleassignment3" = {
+    "roleassignment4" = {
       principal_id               = azurerm_user_assigned_identity.managed_identity.principal_id
       role_definition_id_or_name = "Managed Identity Contributor"
     }

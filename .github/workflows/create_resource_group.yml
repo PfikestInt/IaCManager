@@ -162,8 +162,8 @@ jobs:
     - name: Plan Terraform
       run: terraform plan -out tfplan
 
-    - name: Plan Terraform
-      run: terraform apply tfplan
+    - name: Apply Terraform
+      run: terraform apply -json tfplan
     
   
   # create_workload_repository:
