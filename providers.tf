@@ -13,6 +13,7 @@ terraform {
 }
 
 provider "azurerm" {
+  required_version = "4.16.0"
   features {
     resource_group {
       prevent_deletion_if_contains_resources = false
