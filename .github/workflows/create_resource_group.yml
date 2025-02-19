@@ -126,6 +126,9 @@ jobs:
       with:
         terraform_version: ${{ env.TERRAFORM_VERSION }}
 
+    - name: Initialize Terraform
+      run: terraform init -upgrade
+
     - name: Plan Terraform
       run: terraform plan -out tfplan
     
@@ -142,6 +145,9 @@ jobs:
       uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+    - name: Initialize Terraform
+      run: terraform init -upgrade
 
     - name: Plan Terraform
       run: terraform apply tfplan
