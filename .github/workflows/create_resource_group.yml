@@ -118,6 +118,14 @@ jobs:
     needs: validate
 
     steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ env.TERRAFORM_VERSION }}
+
     - name: Plan Terraform
       run: terraform plan -out tfplan
     
@@ -127,8 +135,16 @@ jobs:
     needs: plan
       
     steps:
-      - name: Plan Terraform
-        run: terraform apply tfplan
+    - name: Checkout
+      uses: actions/checkout@v4
+  
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+    - name: Plan Terraform
+      run: terraform apply tfplan
     
   
   # create_workload_repository:
