@@ -53,11 +53,20 @@ resource "azurerm_user_assigned_identity" "managed_identity" {
   tags                = local.tags
 }
 
-resource "azurerm_federated_identity_credential" "credentials" {
+resource "azurerm_federated_identity_credential" "credentials_main" {
   name                = "github-main"
   resource_group_name = module.resource_group.name
   audience            = ["api://AzureADTokenExchange"]
   issuer              = "https://token.actions.githubusercontent.com"
   parent_id           = azurerm_user_assigned_identity.managed_identity.id
   subject             = "repo:${var.repository_name}:ref:refs/heads/main"
+}
+
+resource "azurerm_federated_identity_credential" "credentials_terraform_apply" {
+  name                = "github-terraform-apply"
+  resource_group_name = module.resource_group.name
+  audience            = ["api://AzureADTokenExchange"]
+  issuer              = "https://token.actions.githubusercontent.com"
+  parent_id           = azurerm_user_assigned_identity.managed_identity.id
+  subject             = "repo:${var.repository_name}:environment:terraform-apply"
 }
