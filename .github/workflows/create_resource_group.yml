@@ -3,6 +3,14 @@ name: "Create Resource Group"
 on:
   workflow_dispatch: 
     inputs:
+      description:
+        description: "Description"
+        required: true
+        type: string
+      role:
+        description: "Role"
+        required: true
+        type: string
       subscription:
         description: Subscription
         required: true
@@ -24,10 +32,6 @@ on:
         - "np"
         - "p"
         - "dr"
-      role:
-        description: "Role"
-        required: true
-        type: string
       location:
           description: "Location"
           required: true
@@ -41,10 +45,6 @@ on:
         required: true
         default: '1'
         type: string        
-      description:
-        description: "Description"
-        required: true
-        type: string
 
 permissions:
   id-token: write
