@@ -18,12 +18,12 @@ on:
         required: true
         type: choice
         options:
-        - "sb"
         - "d"
         - "t"
         - "s"
-        - "p"
         - "np"
+        - "p"
+        - "dr"
       role:
         description: "Role"
         required: true
@@ -31,8 +31,11 @@ on:
       location:
           description: "Location"
           required: true
-          type: string
+          type: choice
           default: eastus
+          options:
+          - eastus
+          - westus
       counter:
         description: "Counter"
         required: true
