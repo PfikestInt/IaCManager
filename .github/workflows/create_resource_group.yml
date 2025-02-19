@@ -163,9 +163,12 @@ jobs:
       run: terraform plan -out tfplan
 
     - name: Apply Terraform
-      run: terraform apply -json tfplan
-    
-  
+      run: |
+        terraform_output=$(terraform apply tfplan | tee /dev/tty)
+        echo $terraform_output
+        terraform_output=$($terraform_output | cut -d "=" -f 2 | xargs)
+        echo $terraform_output
+        
   # create_workload_repository:
   #   name: Create Repository
   #   runs-on: ubuntu-latest
