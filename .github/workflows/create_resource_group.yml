@@ -164,8 +164,7 @@ jobs:
 
     - name: Apply Terraform
       run: |
-        terraform_output=$(terraform apply tfplan > execution.txt)
-        cat execution.txt
+        terraform_output=$(terraform apply tfplan)
         echo $terraform_output
         principal_id=$($terraform_output | cut -d "=" -f 2 | xargs)
         echo $principal_id
