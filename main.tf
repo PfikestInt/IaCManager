@@ -49,7 +49,7 @@ resource "azurerm_resource_group_policy_assignment" "azure_cis_policy" {
 resource "azurerm_user_assigned_identity" "managed_identity" {
   location            = var.location
   name                = var.location == "eastus" ? "id-${var.environment}-github-001" : "id-${var.environment}-github-${var.location}-001"
-  resource_group_name = var.location == "eastus" ? "rg-${var.environment}-${var.role}-${var.counter}" : "rg-${var.environment}-${var.role}-${var.location}-${var.counter}"
+  resource_group_name = module.resource_group.name
   tags                = local.tags
 }
 
