@@ -54,44 +54,79 @@ env:
   ROLE: ${{ github.event.inputs.role}}
   COUNTER: ${{ github.event.inputs.counter }}
   DESCRIPTION: ${{ github.event.inputs.description }}
+  TERRAFORM_VERSION: ${{ secrets.TERRAFORM_VERSION }}
+  ARM_USE_MSI: true
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_CLIENT_ID: $${{ secrets.AZURE_CLIENT_ID }}
 
 jobs:
-  validate_rg_does_not_exists:
-    name: Validate Resource Group
+  validate:
+    name: Validate
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      
-      - name: Azure login
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Azure login
+      uses: azure/login@v2
+      with:
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
 
-      - name: Zero Pad
-        id: padding
-        run: echo "COUNTER=$(printf '%03d' ${{ env.COUNTER }})" >> $GITHUB_ENV
-      
-      - name: Zero Padded
-        if: ${{ env.COUNTER == '' || env.COUNTER == '000'}}
-        run: |
-          echo "${{ env.COUNTER }}"
-          exit 1
-      
-      - name: Set Resource Group Name
-        run: echo "RESOURCE_GROUP_NAME=rg-${{ env.ENVIRONMENT_TYPE }}-${{ env.ROLE }}-${{ env.COUNTER }}" >> $GITHUB_ENV
+    - name: Zero Pad
+      id: padding
+      run: echo "COUNTER=$(printf '%03d' ${{ env.COUNTER }})" >> $GITHUB_ENV
+    
+    - name: Zero Padded
+      if: ${{ env.COUNTER == '' || env.COUNTER == '000'}}
+      run: |
+        echo "${{ env.COUNTER }}"
+        exit 1
+    
+    - name: Set Resource Group Name
+      run: echo "RESOURCE_GROUP_NAME=rg-${{ env.ENVIRONMENT_TYPE }}-${{ env.ROLE }}-${{ env.COUNTER }}" >> $GITHUB_ENV
 
-      - name: Stop Running If RG Exists
-        run: |
-          echo "${{ env.RESOURCE_GROUP_NAME }}"
-          result=$(az group exists --name "${{ env.RESOURCE_GROUP_NAME }}") && \
-          if [[ $result == "true" ]] then \
-            echo "Resource group already exists: ${{ env.RESOURCE_GROUP_NAME }}"; 
-            exit 1; 
-          fi
+    - name: Stop Running If RG Exists
+      run: |
+        echo "${{ env.RESOURCE_GROUP_NAME }}"
+        result=$(az group exists --name "${{ env.RESOURCE_GROUP_NAME }}") && \
+        if [[ $result == "true" || $result == null ]] then \
+          echo "Resource group already exists: '${{ env.RESOURCE_GROUP_NAME }}'"; 
+          exit 1; 
+        fi
+    
+    - name: Install Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+    - name: Initialize Terraform
+      run: terraform init -upgrade
+    
+    - name: Verify Terraform
+      run: terraform verify
+      
+  plan:
+    name: Plan
+    runs-on: ubuntu-latest
+    needs: validate
+
+    steps:
+    - name: Plan Terraform
+      run: terraform plan -out tfplan
+    
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: plan
+      
+    steps:
+      - name: Plan Terraform
+        run: terraform apply tfplan
+    
   
   # create_workload_repository:
   #   name: Create Repository
