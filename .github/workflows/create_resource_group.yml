@@ -167,8 +167,9 @@ jobs:
         terraform_output=$(terraform apply tfplan > execution.txt)
         cat execution.txt
         echo $terraform_output
-        terraform_output=$($terraform_output | cut -d "=" -f 2 | xargs)
-        echo $terraform_output
+        principal_id=$($terraform_output | cut -d "=" -f 2 | xargs)
+        echo $principal_id
+        echo "Done"
         
   # create_workload_repository:
   #   name: Create Repository
