@@ -164,7 +164,8 @@ jobs:
 
     - name: Apply Terraform
       run: |
-        terraform_output=$(terraform apply tfplan | tee /dev/tty)
+        terraform_output=$(terraform apply tfplan > execution.txt)
+        cat execution.txt
         echo $terraform_output
         terraform_output=$($terraform_output | cut -d "=" -f 2 | xargs)
         echo $terraform_output
