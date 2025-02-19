@@ -28,6 +28,11 @@ on:
         description: "Role"
         required: true
         type: string
+      location:
+          description: "Location"
+          required: true
+          type: string
+          default: eastus
       counter:
         description: "Counter"
         required: true
@@ -45,6 +50,7 @@ permissions:
 env:
   SUBSCRIPTION: ${{ github.event.inputs.subscription }}
   ENVIRONMENT_TYPE: ${{ github.event.inputs.environment_type }}
+  LOCATION: ${{ github.event.inputs.location }}
   ROLE: ${{ github.event.inputs.role}}
   COUNTER: ${{ github.event.inputs.counter }}
   DESCRIPTION: ${{ github.event.inputs.description }}
@@ -61,9 +67,9 @@ jobs:
       - name: Azure login
         uses: azure/login@v2
         with:
-          client-id: "8b6f2c67-1d44-48e0-971a-08cf0093cd4f"
-          subscription-id: "46b82283-ba32-4501-a19e-7b75892faf7f"
-          tenant-id: "d3994d90-925b-4938-badd-e17aed9acc0a"
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
 
       - name: Zero Pad
         id: padding
@@ -72,7 +78,7 @@ jobs:
       - name: Zero Padded
         if: ${{ env.COUNTER == '' || env.COUNTER == '000'}}
         run: |
-          echo "${{ steps.padding.counter }}"
+          echo "${{ env.COUNTER }}"
           exit(1)
       
       - name: Set Resource Group Name
@@ -81,7 +87,7 @@ jobs:
       - name: Azure CLI script
         run: |
           echo "${{ env.RESOURCE_GROUP_NAME }}"
-          az group exists --name "${{ env.RESOURCE_GROUP_NAME }}"
+          az group create --location ${{ env.LOCATION }} --name "${{ env.RESOURCE_GROUP_NAME }}"
   
   # create_workload_repository:
   #   name: Create Repository
