@@ -18,11 +18,12 @@ resource "azurerm_federated_identity_credential" "credentials" {
 }
 
 module "resource_group" {
-  source   = "Azure/avm-res-resources-resourcegroup/azurerm"
-  version  = "0.2.1"
-  location = var.location
-  name     = var.location == "eastus" ? "rg-${var.environment}-${var.role}-${var.counter}" : "rg-${var.environment}-${var.role}-${var.location}-${var.counter}"
-  tags     = local.resource_group_tags
+  source           = "Azure/avm-res-resources-resourcegroup/azurerm"
+  version          = "0.2.1"
+  enable_telemetry = false
+  location         = var.location
+  name             = var.location == "eastus" ? "rg-${var.environment}-${var.role}-${var.counter}" : "rg-${var.environment}-${var.role}-${var.location}-${var.counter}"
+  tags             = local.resource_group_tags
   role_assignments = {
     "roleassignment1" = {
       principal_id               = azurerm_user_assigned_identity.managed_identity.principal_id
