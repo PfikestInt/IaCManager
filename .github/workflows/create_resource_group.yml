@@ -148,7 +148,7 @@ jobs:
       uses: actions/checkout@v4
     
     - name: Set Repository Name
-      run: echo "REPOSITORY_NAME=${{ github.repository_owner }}/workload-rg-${{ env.ENVIRONMENT }}-${{ env.PADDED_COUNTER }}" >> $GITHUB_ENV
+      run: echo "REPOSITORY_NAME=${{ github.repository_owner }}/workload-rg-${{ env.ENVIRONMENT_TYPE }}-${{ env.COUNTER }}" >> $GITHUB_ENV
       
     - name: Azure login
       uses: azure/login@v2
