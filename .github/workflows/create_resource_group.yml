@@ -87,7 +87,7 @@ jobs:
       - name: Azure CLI script
         run: |
           echo "${{ env.RESOURCE_GROUP_NAME }}"
-          az group create --location ${{ env.LOCATION }} --name "${{ env.RESOURCE_GROUP_NAME }}"
+          az group exists --name "${{ env.RESOURCE_GROUP_NAME }}"
   
   # create_workload_repository:
   #   name: Create Repository
