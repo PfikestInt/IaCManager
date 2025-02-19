@@ -87,10 +87,11 @@ jobs:
       - name: Stop Running If RG Exists
         run: |
           echo "${{ env.RESOURCE_GROUP_NAME }}"
-          result=$(az group exists --name "${{ env.RESOURCE_GROUP_NAME }}") \
+          result=$(az group exists --name "${{ env.RESOURCE_GROUP_NAME }}") && \
           if [[ $result == "true" ]] then \
-            echo "Resource group already exists: ${{ env.RESOURCE_GROUP_NAME }}"; \
-            exit 1;
+            echo "Resource group already exists: ${{ env.RESOURCE_GROUP_NAME }}"; 
+            exit 1; 
+          fi
   
   # create_workload_repository:
   #   name: Create Repository
