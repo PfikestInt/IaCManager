@@ -51,10 +51,6 @@ resource "azurerm_user_assigned_identity" "managed_identity" {
   name                = var.location == "eastus" ? "id-${var.environment}-github-001" : "id-${var.environment}-github-${var.location}-001"
   resource_group_name = var.location == "eastus" ? "rg-${var.environment}-${var.role}-${var.counter}" : "rg-${var.environment}-${var.role}-${var.location}-${var.counter}"
   tags                = local.tags
-
-  depends_on = [
-    module.resource_group
-  ]
 }
 
 resource "azurerm_federated_identity_credential" "credentials" {
