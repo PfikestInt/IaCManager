@@ -24,7 +24,12 @@ variable "counter" {
 }
 
 variable "product" {
-  description = "Product name used in tags."
+  description = "Product team used in tags."
+  type        = string
+}
+
+variable "description" {
+  description = "Description used in tags."
   type        = string
 }
 
