@@ -18,17 +18,6 @@ sequenceDiagram
   Azure->>Pipeline: managed identity created
   Pipeline->>Azure: create federated credential for main branch
   Azure->>Pipeline: credential created
-  Pipeline->>Azure: create federated credential for develop branch
+  Pipeline->>Azure: create federated credential for terraform-apply environment
   Azure->>Pipeline: credential created
-  Pipeline->>GitHub: add client id secret to target repo
-  GitHub->>Pipeline: secret added
-  Pipeline->>GitHub: add subscription id secret to target repo
-  GitHub->>Pipeline: secret added
-  Pipeline->>GitHub: add tenant id secret to target repo
-  GitHub->>Pipeline: secret added 
-  Pipeline->>Python: add resource group to history
-  Python->>Pipeline: history updated
-  Pipeline->>git: commit history change
-  git->>Pipeline: history committed
-  Pipeline->>Documentation: rebuild documentation
 ```

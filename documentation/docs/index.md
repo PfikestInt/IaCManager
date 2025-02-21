@@ -30,30 +30,18 @@ The environments within a workload IaC repository are managed using a branching 
 
 ``` mermaid
 stateDiagram-v2
-    Main --> Develop
-    Main --> Test
-    Main --> Stage
-    Main --> Prod
-    Main --> Feature/Main
-    Develop --> Feature/Develop
-    Test --> Feature/Test
-    Stage --> Feature/Stage
-    Prod --> Feature/Prod
-    
-    Feature/Main --> Main
-    Feature/Develop --> Develop
-    Feature/Test --> Test
-    Feature/Stage --> Stage
-    Feature/Prod --> Prod
+    Develop --> Test
+    Test --> Stage
+    Stage --> Main
 ```
 
 ## Pipelines
 
-### Create Workload Pipeline
+### Create Repository Pipeline
 
 The Create Workload pipeline is used to create a standardized repository in which an IaC implementation can be defined and managed. This pipeline is also responsible for populating the environmental secrets that provide the credentials for each of the environment branches.
 
-### Deployment Pipeline
+### Create Resource Group
 
 The Deployment pipeline is triggered upon approval of a pull request merging changes into a branch.  It creates a deployment plan and places the plan in the pull request as a comment for review. Following the review, the deployment stage of the pipeline can either be executed of canceled.
 
