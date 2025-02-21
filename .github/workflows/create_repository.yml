@@ -71,11 +71,11 @@ jobs:
           fi
           echo "Created: ${REPO_URL}"
 
-      - name:
+      - name: Add Team
         run: |
           curl \
             -X PUT \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: ${{ steps.app_token.outputs.token }}" \
-            https://api.github.com/orgs/${{ github.repository_owner }}/teams/RepoCreate/repos/${{ github.repository_owner }}/${{ env.repository_owner }}
+            https://api.github.com/orgs/${{ github.repository_owner }}/teams/RepoCreate/repos/${{ github.repository_owner }}/${{ env.REPO_NAME }}
           echo "RepoCreate Team Added"
