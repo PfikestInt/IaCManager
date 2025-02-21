@@ -31,15 +31,11 @@ jobs:
     name: Create Repository
     runs-on: ubuntu-latest
 
-    outputs:
-      repository-url: ${{ steps.create_repo.outputs.REPO_URL }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Zero Pad
-        id: padding
         run: echo "COUNTER=$(printf '%03d' ${{ env.COUNTER }})" >> $GITHUB_ENV
 
       - name: Zero Padded
@@ -47,6 +43,9 @@ jobs:
         run: |
           echo "${{ env.COUNTER }}"
           exit 1
+
+      - name: Set Repository Name
+        run: echo "REPO_NAME=terraform-rg-${{ env.ROLE }}-${{ env.COUNTER }}" >> $GITHUB_ENV
 
       - name: GitHub Authorization
         uses: actions/create-github-app-token@v1
@@ -56,13 +55,7 @@ jobs:
           private-key: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_SECRET }}
           owner: ${{ github.repository_owner }}
 
-      - name: Set Repository Name
-        run: |
-          echo "REPO_NAME=terraform-rg-${{ env.ROLE }}-${{ env.PADDED_COUNTER }}" >> $GIHUB_ENV
-
       - name: Create Repository
-        if: ${{ env.PADDED_COUNTER != '' && env.PADDED_COUNTER != '000'}}
-        id: create_repo
         run: |
           curl -L \
             -X POST \
@@ -70,13 +63,19 @@ jobs:
             -H "Authorization: Bearer ${{ steps.app_token.outputs.token }}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/${{ github.repository_owner }}/WorkloadTemplate/generate \
-            -d '{"owner":"${{ github.repository_owner }}","name":"terraform-rg-${{ env.ROLE }}-${{ env.PADDED_COUNTER }}","description":"${{ env.DESCRIPTION }}","include_all_branches":true,"private":false}' > results.json && \
+            -d '{"owner":"${{ github.repository_owner }}","name":"${{ env.REPO_NAME }}","description":"${{ env.DESCRIPTION }}","include_all_branches":true,"private":false}' > results.json && \
           export REPO_URL=$(jq '.html_url' results.json)
-          if [[ $REPO_URL == "" || $REPO_URL == null ]] then \
-            echo "Failed to create repo: ${{}}'";
+          if [[ REPO_URL == "" || REPO_URL == null ]] then
+            echo "Failed to create ${{ env.REPO_NAME }}";
             exit 1;
           fi
-
           echo "Created: ${REPO_URL}"
 
-      - name: Add Team
+      - name:
+        run: |
+          curl \
+            -X PUT \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: ${{ steps.app_token.outputs.token }}" \
+            https://api.github.com/orgs/${{ github.repository_owner }}/teams/RepoCreate/repos/${{ github.repository_owner }}/${{ env.repository_owner }}
+          echo "RepoCreate Team Added"
