@@ -125,7 +125,15 @@ jobs:
       run: terraform init -upgrade
 
     - name: Plan Terraform
-      run: terraform plan -out tfplan
+      run: terraform plan \
+          -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+          -var="location=${{ env.LOCATION }}" \
+          -var="environment=${{ env.ENVIRONMENT_TYPE }}" \
+          -var="role=${{ env.ROLE }}" \
+          -var="counter=${{ env.COUNTER }}" \
+          -var="product=${{ env.PRODUCT }}" \
+          -var="description=${{ env.DESCRIPTION }}" \
+          -var="repository_name=${{ env.REPOSITORY_NAME }}"
 
   deploy:
     name: Deploy

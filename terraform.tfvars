@@ -1,7 +1,0 @@
-subscription_id = "46b82283-ba32-4501-a19e-7b75892faf7f"
-location        = "eastus"
-environment     = "d"
-role            = "sdp"
-counter         = "001"
-product         = "Signature Data Processing"
-repository_name = "PfikestInt/terraform-rg-sdp-001"
