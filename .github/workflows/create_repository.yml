@@ -73,6 +73,7 @@ jobs:
 
       - name: Add Team
         run: |
+          echo "https://api.github.com/orgs/${{ github.repository_owner }}/teams/RepoCreate/repos/${{ github.repository_owner }}/${{ env.REPO_NAME }}"
           curl -L \
             -X PUT \
             -H "Accept: application/vnd.github+json" \
