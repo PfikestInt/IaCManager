@@ -125,7 +125,7 @@ jobs:
       run: terraform init -upgrade
 
     - name: Plan Terraform
-      run: terraform plan \
+      run: terraform plan -out main.tfplan \
           -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
           -var="location=${{ env.LOCATION }}" \
           -var="environment=${{ env.ENVIRONMENT_TYPE }}" \
