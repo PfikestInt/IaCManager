@@ -28,31 +28,6 @@ variable "product" {
   type        = string
 }
 
-variable "deployed_by" {
-  description = "GitHub user who ran the deployment--used in resource group tags."
-  type        = string
-}
-
-variable "last_deployment_time" {
-  description = "Last time the deployment was run--used in resource group tags."
-  type        = string
-}
-
-variable "iac_version" {
-  description = "The version tag of the deployment--used in resource group tags.."
-  type        = string
-}
-
-variable "iac_repository" {
-  description = "The GitHub repository the infrastructure was deployed from--used in resource group tags.."
-  type        = string
-}
-
-variable "description" {
-  description = "A description of the reason for existence--used in resource group tags.."
-  type        = string
-}
-
 variable "repository_name" {
   description = "The organization/repo name to use for the federated credentials."
   type        = string

@@ -1,19 +1,12 @@
 name: "Create Workload Repository"
 
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
     inputs:
-      environment_type:
-        description: "Environment"
+      description:
+        description: "Description"
         required: true
-        type: choice
-        options:
-        - "sb"
-        - "d"
-        - "t"
-        - "s"
-        - "p"
-        - "np"
+        type: string
       role:
         description: "Role"
         required: true
@@ -22,10 +15,6 @@ on:
         description: "Counter"
         required: true
         default: '1'
-        type: string        
-      description:
-        description: "Description"
-        required: true
         type: string
 
 permissions:
@@ -33,7 +22,6 @@ permissions:
   contents: write
 
 env:
-  ENVIRONMENT: ${{ github.event.inputs.environment_type }}
   ROLE: ${{ github.event.inputs.role}}
   COUNTER: ${{ github.event.inputs.counter }}
   DESCRIPTION: ${{ github.event.inputs.description }}
@@ -56,11 +44,11 @@ jobs:
       - name: GitHub Authorization
         uses: actions/create-github-app-token@v1
         id: app_token
-        with: 
+        with:
           app-id: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_ID }}
           private-key: ${{ secrets.PFIKEST_REPOSITORY_MANAGER_SECRET }}
           owner: ${{ github.repository_owner }}
-        
+
       - name: Create Repository
         if: ${{ env.PADDED_COUNTER != '' && env.PADDED_COUNTER != '000'}}
         id: create_repo
@@ -71,6 +59,6 @@ jobs:
             -H "Authorization: Bearer ${{ steps.app_token.outputs.token }}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/${{ github.repository_owner }}/WorkloadTemplate/generate \
-            -d '{"owner":"PfikestInt","name":"workload-rg-${{ env.ENVIRONMENT }}-${{ env.PADDED_COUNTER }}","description":"${{ env.DESCRIPTION }}","include_all_branches":true,"private":false}' > results.json && \
+            -d '{"owner":"PfikestInt","name":"terraform-rg-${{ env.ROLE }}-${{ env.PADDED_COUNTER }}","description":"${{ env.DESCRIPTION }}","include_all_branches":true,"private":false}' > results.json && \
           export REPO_URL=$(jq '.html_url' results.json)
           echo "Created: ${REPO_URL}"

@@ -7,7 +7,7 @@ module "resource_group" {
   enable_telemetry = false
   location         = var.location
   name             = var.location == "eastus" ? "rg-${var.environment}-${var.role}-${var.counter}" : "rg-${var.environment}-${var.role}-${var.location}-${var.counter}"
-  tags             = local.resource_group_tags
+  tags             = local.tags
   role_assignments = {
     "roleassignment1" = {
       principal_id               = azurerm_user_assigned_identity.managed_identity.principal_id
@@ -36,8 +36,8 @@ resource "azurerm_resource_group_policy_assignment" "azure_cis_policy" {
   # 2025-02-18: Accommodate a bug in the definition
   parameters = <<-EOT
   {
-    "operationName-c5447c04-a4d7-4ba8-a263-c9ee321a6858": { 
-      "value": "Microsoft.Authorization/policyAssignments/write" 
+    "operationName-c5447c04-a4d7-4ba8-a263-c9ee321a6858": {
+      "value": "Microsoft.Authorization/policyAssignments/write"
     },
     "operationName-b954148f-4c11-4c38-8221-be76711e194a": {
       "value": "Microsoft.Sql/servers/firewallRules/write"
