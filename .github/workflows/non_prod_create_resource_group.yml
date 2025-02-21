@@ -125,15 +125,16 @@ jobs:
       run: terraform init -upgrade
 
     - name: Plan Terraform
-      run: terraform plan -out main.tfplan \
-          -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
-          -var="location=${{ env.LOCATION }}" \
-          -var="environment=${{ env.ENVIRONMENT_TYPE }}" \
-          -var="role=${{ env.ROLE }}" \
-          -var="counter=${{ env.COUNTER }}" \
-          -var="product=${{ env.PRODUCT }}" \
-          -var="description=${{ env.DESCRIPTION }}" \
-          -var="repository_name=${{ env.REPOSITORY_NAME }}"
+      run: |
+        echo 'subscription_id = "${{ secrets.AZURE_SUBSCRIPTION_ID }}"' > terraform.tfvars
+        echo 'location = "${{ env.LOCATION }}"' >> terraform.tfvars
+        echo 'environment = "${{ env.ENVIRONMENT_TYPE }}"' >> terraform.tfvars
+        echo 'role = "${{ env.ROLE }}"' >> terraform.tfvars
+        echo 'counter = "${{ env.COUNTER }}"' >> terraform.tfvars
+        echo 'product = "${{ env.PRODUCT }}"' >> terraform.tfvars
+        echo 'description = "${{ env.DESCRIPTION }}"' >> terraform.tfvars
+        echo 'repository_name = "${{ env.REPOSITORY_NAME }}"' >> terraform.tfvars
+        terraform plan -out main.tfplan
 
   deploy:
     name: Deploy
@@ -166,13 +167,12 @@ jobs:
 
     - name: Apply Terraform
       run: |
-        terraform apply -auto-approve \
-          -var="subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
-          -var="location=${{ env.LOCATION }}" \
-          -var="environment=${{ env.ENVIRONMENT_TYPE }}" \
-          -var="role=${{ env.ROLE }}" \
-          -var="counter=${{ env.COUNTER }}" \
-          -var="product=${{ env.PRODUCT }}" \
-          -var="description=${{ env.DESCRIPTION }}" \
-          -var="repository_name=${{ env.REPOSITORY_NAME }}"
-
+        echo 'subscription_id = "${{ secrets.AZURE_SUBSCRIPTION_ID }}"' > terraform.tfvars
+        echo 'location = "${{ env.LOCATION }}"' >> terraform.tfvars
+        echo 'environment = "${{ env.ENVIRONMENT_TYPE }}"' >> terraform.tfvars
+        echo 'role = "${{ env.ROLE }}"' >> terraform.tfvars
+        echo 'counter = "${{ env.COUNTER }}"' >> terraform.tfvars
+        echo 'product = "${{ env.PRODUCT }}"' >> terraform.tfvars
+        echo 'description = "${{ env.DESCRIPTION }}"' >> terraform.tfvars
+        echo 'repository_name = "${{ env.REPOSITORY_NAME }}"' >> terraform.tfvars
+        terraform apply -auto-approve
