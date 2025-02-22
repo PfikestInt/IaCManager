@@ -45,7 +45,7 @@ jobs:
           exit 1
 
       - name: Set Repository Name
-        run: echo "REPO_NAME=iac-landingzone-rg-${{ env.ROLE }}-${{ env.COUNTER }}" >> $GITHUB_ENV
+        run: echo "REPO_NAME=iac-workload-rg-${{ env.ROLE }}-${{ env.COUNTER }}" >> $GITHUB_ENV
 
       - name: GitHub Authorization
         uses: actions/create-github-app-token@v1
